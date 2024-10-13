@@ -29,6 +29,7 @@ rl.question(
       const mp4Files = files.filter(
         (file) => file.endsWith(".mp4") && !file.includes("reduced_")
       );
+      const totalFile = mp4Files.length;
 
       console.log("Total files: ", mp4Files.length);
 
@@ -36,14 +37,16 @@ rl.question(
         const inputPath = `${folderPath}/${file}`;
         const outputPath = `${folderPath}/reduced_${file}`;
         try {
-          console.log("start processing file:", inputPath);
+          console.log(
+            `start processing file (${index}/${totalFile}): ${inputPath}`
+          );
           await reduceFileSize(inputPath, outputPath);
           await removeFile(inputPath);
           console.log("finished processing file:", outputPath);
         } catch (e) {
           console.log("ERROR", inputPath, e);
         } finally {
-          if (index === mp4Files.length - 1) {
+          if (index === totalFile) {
             process.exit(0);
           }
         }
